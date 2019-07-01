@@ -17,14 +17,14 @@ kubeadm has configuration options to specify configuration information for cloud
 in-tree cloud provider can be configured using kubeadm as shown below:
 
 ```yaml
-apiVersion: kubeadm.k8s.io/v1beta1
+apiVersion: kubeadm.k8s.io/v1beta2
 kind: InitConfiguration
 nodeRegistration:
   kubeletExtraArgs:
     cloud-provider: "openstack"
     cloud-config: "/etc/kubernetes/cloud.conf"
 ---
-apiVersion: kubeadm.k8s.io/v1beta1
+apiVersion: kubeadm.k8s.io/v1beta2
 kind: ClusterConfiguration
 kubernetesVersion: v1.13.0
 apiServer:
@@ -104,7 +104,7 @@ Different settings can be applied to a load balancer service in AWS using _annot
 * `service.beta.kubernetes.io/aws-load-balancer-proxy-protocol`: Used on the service to enable the proxy protocol on an ELB. Right now we only accept the value `*` which means enabling the proxy protocol on all ELB backends. In the future we could adjust this to allow setting the proxy protocol only on certain backends.
 * `service.beta.kubernetes.io/aws-load-balancer-ssl-ports`: Used on the service to specify a comma-separated list of ports that will use SSL/HTTPS listeners. Defaults to `*` (all)
 
-The information for the annotations for AWS is taken from the comments on [aws.go](https://github.com/kubernetes/kubernetes/blob/master/pkg/cloudprovider/providers/aws/aws.go)
+The information for the annotations for AWS is taken from the comments on [aws.go](https://github.com/kubernetes/cloud-provider-aws/blob/master/pkg/cloudprovider/providers/aws/aws.go)
 
 ## Azure
 
@@ -294,6 +294,8 @@ and should appear in the `[BlockStorage]` section of the `cloud.conf` file:
   there are many Nova availability zones but only one Cinder availability zone.
   The default value is `false` to preserve the behavior used in earlier
   releases, but may change in the future.
+* `node-volume-attach-limit` (Optional): Maximum number of Volumes that can be
+  attached to the node, default is 256 for cinder.
 
 If deploying Kubernetes versions <= 1.8 on an OpenStack deployment that uses
 paths rather than ports to differentiate between endpoints it may be necessary
